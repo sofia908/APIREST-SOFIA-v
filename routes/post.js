@@ -1,15 +1,16 @@
-const express = require('express');
+const express = require('express'); // Importo express para crear las rutas
 const router = express.Router();
 const Post = require('../models/Post'); // Importo el modelo de Post
-
+//get todos los posts
 router.get('/', async (req, res) => {  //llama todas los pots de la base de datos
     try {
-        const posts = await Post.find();
-        res.json(posts);
+        const posts = await Post.find(); //busca todos los postos 
+        res.json(posts); //devuelve todos los posts en formato json
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ message: err.message }); //si hay un error, devuelve un mensaje de error
     }
 });
+//get un post por id
 router.get('/:documentoId', async (req, res) => {
     try {
         const post = await Post.findById(req.params.documentoId);
@@ -29,14 +30,14 @@ router.post('/', async (req, res) => { //crea un nuevo post
         apellido: req.body.apellido
     });
 
-    try {
+    try {  //
         const savedPost = await post.save();
         res.json(savedPost);
     } catch (err) {
         res.json({ message: err.message });
     }
 });
-router.patch('/:documentoId', async (req, res) => { //actualiza un post
+router.patch('/:documentoId', async (req, res) => { //actualiza un post un patch es una actualizacion
     try {
         const updatedPost = await Post.updateOne( 
             { _id: req.params.documentoId }, { $set: { nombre: req.body.nombre, apellido: req.body.apellido } }); // son bases de datos no relacionales, por lo que no se actualiza un campo en particular, sino que se actualiza todo el objeto
