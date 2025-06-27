@@ -4,13 +4,21 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const morgan = require('morgan'); 
 const bodyParser = require('body-parser');
+app.use(bodyParser.json()); 
 
+const postRoutes =require('./routes/post'); //conecto las rutas de los servicios
+app.use('/servicios', postRoutes);
 
-
-app.get('/', (req, res) => { 
-     res.send('funcionando correctamente'); 
-
+mongoose.connect('mongodb+srv://sofiavaron2324:ENOujNksz4lGWH5P@cluster0.ljr0ouu.mongodb.net/post?retryWrites=true&w=majority&appName=Cluster0', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
 }); 
 
+const connection = mongoose.connection; // creo conexion a la base de datos
+connection.once('open', () => {
+    console.log('MongoDB conexion de base de datos  esta conectada');
+});
 
-app.listen(3000);
+app.listen(3000); //puerto por donde escucha el servidor
+
+
